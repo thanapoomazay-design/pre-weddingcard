@@ -1,0 +1,124 @@
+<div class="orientation-warning">
+  <div class="warning-icon">📱</div>
+  <h2 class="warning-text">กรุณาหมุนหน้าจอเป็นแนวนอน</h2>
+  <p class="warning-sub">เพื่อให้การแสดงผล Flipbook สมบูรณ์แบบที่สุด</p>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="wedding-song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="scene" (click)="handleGlobalClick($event)">
+  <div class="book" [ngClass]="getBookClass()">
+
+    <div class="spine-rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    
+    <div class="leaf" [ngClass]="{'flipped': leaves[0].isFlipped}">
+      <div class="page front bg-cover-front">
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="p1-content">
+          <div class="text-top">THE WEDDING OF</div>
+          <div class="circle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=300&q=80" alt="Couple" />
+          </div>
+          <h1 class="title-names">Mick &<br>Khim</h1>
+          <div class="text-bottom">SAVE THE DATE</div>
+          <div class="click-hint">TAP RIGHT TO OPEN</div>
+        </div>
+      </div>
+      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+    </div>
+
+    <div class="leaf" [ngClass]="{'flipped': leaves[1].isFlipped}">
+      <div class="page front bg-video-page">
+        <div class="p-video-content">
+          <h2 class="section-title">A Glimpse of Us</h2>
+          <div class="video-frame">
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80"></video>
+          </div>
+          <p class="video-caption">"ทุกเรื่องราวเริ่มต้นที่นี่..."</p>
+        </div>
+      </div>
+      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+    </div>
+
+    <div class="leaf" [ngClass]="{'flipped': leaves[2].isFlipped}">
+      <div class="page front bg-map-full">
+        <div class="glass-card">
+          <h2 class="section-title">The Venue</h2>
+          <div class="icon-accent">📍</div>
+          <div class="venue-name">Suan Phueng Meadows</div>
+          <div class="venue-address">อ.สวนผึ้ง จ.ราชบุรี<br>ท่ามกลางหุบเขาและทุ่งหญ้า</div>
+          <button class="btn-solid" (click)="$event.stopPropagation()">Open in Maps</button>
+        </div>
+      </div>
+      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+    </div>
+
+    <div class="leaf" [ngClass]="{'flipped': leaves[3].isFlipped}">
+      <div class="page front bg-photo-full">
+        <div class="glass-card">
+          <h2 class="section-title">Together</h2>
+          <div class="since-text">SINCE 2022</div>
+        </div>
+      </div>
+      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+    </div>
+
+    <div class="leaf" [ngClass]="{'flipped': leaves[4].isFlipped}">
+      <div class="page front bg-rsvp-page">
+        <div class="p-rsvp-content">
+          <div class="elegant-form">
+            <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+              <select required>
+                <option value="" disabled selected>จำนวนผู้เข้าร่วม</option>
+                <option value="1">1 ท่าน</option>
+                <option value="2">2 ท่าน</option>
+              </select>
+            </div>
+            <div class="radio-card-group">
+              <label class="radio-card">
+                <input type="radio" name="attend" value="yes" checked>
+                <span class="card-content"><span class="check-circle"></span> Joyfully Accepts</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="attend" value="no">
+                <span class="card-content"><span class="check-circle"></span> Declines</span>
+              </label>
+            </div>
+            
+            <button type="button" class="btn-gold-gradient w-100" (click)="confirmRSVP($event)">
+              Send Response
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="page back back-cover bg-cover-back">
+        <div class="thanks-container">
+          <div class="thanks-icon">🕊️</div>
+          <h2 class="thanks-title">Thank You</h2>
+          <p class="thanks-subtext">For being a part of our story</p>
+          <div class="divider-theme"></div>
+          <div class="thanks-names">Mick & Khim</div>
+          <p class="thanks-date">December 24, 2026</p>
+          <div class="see-you-text">TAP RIGHT TO RESTART</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<canvas id="confetti-canvas"></canvas>

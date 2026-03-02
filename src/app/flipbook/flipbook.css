@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Prompt:wght@300;400;500;600&display=swap');
+
+.scene {
+  --bg-cream: #F9F8F4; 
+  --page-white: #FFFFFF; 
+  --text-dark: #3E4A3D; 
+  --text-accent: #7A906F; 
+  --corner-accent: #DCE2D3; 
+  --theme-gradient: linear-gradient(135deg, #7A906F 0%, #A9BA9D 50%, #5E7352 100%);
+  --cover-gradient: linear-gradient(135deg, #FFFFFF 0%, #F0F2EA 100%);
+
+  --book-w: 420px;
+  --book-h: 600px;
+  --font-base: 16px;
+
+  width: 100vw; height: 100dvh; perspective: 2500px; position: relative;
+  overflow: hidden; font-family: 'Prompt', sans-serif;
+  background: linear-gradient(-45deg, #F9F8F4, #FFFFFF, #C5D3C1, #94a684b6);
+  background-size: 400% 400%; animation: ambientFlow 10s ease infinite;
+}
+
+.scene * { box-sizing: border-box; }
+@keyframes ambientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* 📱 Responsive Sizes */
+@media (max-width: 1199px) { .scene { --book-w: 380px; --book-h: 540px; --font-base: 15px; } }
+@media (max-width: 991px) { .scene { --book-w: 320px; --book-h: 460px; --font-base: 13px; } }
+@media (max-width: 768px) { 
+  .scene { --book-w: 90vw; --book-h: 135vw; --font-base: 3.5vw; } 
+}
+
+/* 🔄 ระบบบังคับ Tablet แนวนอน */
+.orientation-warning { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-cream); z-index: 99999; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-family: 'Prompt', sans-serif; padding: 20px; }
+.warning-icon { font-size: 4rem; margin-bottom: 20px; animation: rotatePhone 2s infinite; color: var(--text-accent); }
+.warning-text { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 10px; }
+.warning-sub { font-size: 1rem; color: #777; }
+@keyframes rotatePhone { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
+
+@media screen and (min-width: 768px) and (orientation: portrait) {
+  .orientation-warning { display: flex; }
+  .scene { display: none !important; }
+}
+
+/* ---------------- 3D BOOK POSITIONING ---------------- */
+.book { 
+  position: absolute; top: 50%; left: 50%;
+  width: var(--book-w, 320px); height: var(--book-h, 460px); font-size: var(--font-base, 14px);
+  transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); 
+  border-radius: 0 12px 12px 0;
+}
+
+.book.closed-front { transform: translate(-50%, -50%); }
+.book.open { transform: translate(0%, -50%); }
+.book.closed-back { transform: translate(50%, -50%); box-shadow: none !important; }
+
+/* มือถือ */
+@media (max-width: 768px) {
+  .book.closed-front, 
+  .book.open { transform: translate(-50%, -50%) !important; }
+  .book.closed-back { transform: translate(50%, -50%) !important; box-shadow: none !important; }
+}
+
+/* ---------------- ห่วงสันสมุด (Rings Binder) ---------------- */
+.spine-rings {
+  position: absolute; top: 5%; bottom: 5%; left: -12px; width: 24px;
+  display: flex; flex-direction: column; justify-content: space-evenly;
+  z-index: 50; transform: translateZ(20px); pointer-events: none; 
+}
+
+.ring {
+  width: 100%; height: 10px;
+  background: linear-gradient(180deg, #E6C27A 0%, #FFF5D1 30%, #C9A050 70%, #8C6A2E 100%);
+  border-radius: 5px; box-shadow: 2px 4px 6px rgba(0,0,0,0.3), inset 0px 1px 1px rgba(255,255,255,0.8);
+  position: relative;
+}
+
+.ring::before, .ring::after {
+  content: ""; position: absolute; top: -2px; width: 6px; height: 14px;
+  background: rgba(0, 0, 0, 0.25); border-radius: 3px; z-index: -1;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);
+}
+.ring::before { left: 2px; } 
+.ring::after { right: 2px; } 
+
+/* ---------------- LEAF & PAGE ---------------- */
+.leaf { 
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  transform-origin: left center; transform-style: preserve-3d; 
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); 
+}
+
+/* --- ตอนยังไม่พลิก (ขวาทับซ้าย) --- */
+/* --- สถานะปกติ (เปิดจากขวาไปซ้าย) --- */
+.leaf:nth-child(2) { z-index: 5; transform: rotateY(0deg) translateZ(5px); }
+.leaf:nth-child(3) { z-index: 4; transform: rotateY(0deg) translateZ(4px); }
+.leaf:nth-child(4) { z-index: 3; transform: rotateY(0deg) translateZ(3px); }
+.leaf:nth-child(5) { z-index: 2; transform: rotateY(0deg) translateZ(2px); }
+.leaf:nth-child(6) { z-index: 1; transform: rotateY(0deg) translateZ(1px); }
+
+/* --- สถานะเมื่อพลิกไปแล้ว (ฝั่งซ้าย) --- */
+/* แผ่นที่ 6 (Thank You) ต้องมีค่า translateZ ที่ 'ติดลบมากที่สุด' เพื่อให้ลอยมาหน้าสุด */
+.leaf.flipped:nth-child(2) { z-index: 1 !important; transform: rotateY(-180deg) translateZ(-1px) !important; }
+.leaf.flipped:nth-child(3) { z-index: 2 !important; transform: rotateY(-180deg) translateZ(-2px) !important; }
+.leaf.flipped:nth-child(4) { z-index: 3 !important; transform: rotateY(-180deg) translateZ(-3px) !important; }
+.leaf.flipped:nth-child(5) { z-index: 4 !important; transform: rotateY(-180deg) translateZ(-4px) !important; }
+.leaf.flipped:nth-child(6) { z-index: 5 !important; transform: rotateY(-180deg) translateZ(-5px) !important; }
+
+.page { 
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
+  backface-visibility: hidden; -webkit-backface-visibility: hidden; 
+  background-color: var(--page-white); overflow: hidden; 
+}
+.page.front { transform: rotateY(0deg); border-right: 1px solid rgba(0,0,0,0.1); border-radius: 0 12px 12px 0; }
+.page.back { transform: rotateY(180deg); border-left: 1px solid rgba(0,0,0,0.1); border-radius: 12px 0 0 12px; }
+
+/* แสงเงาจำลองความโค้งของกระดาษ (Crease Shadow) */
+.page::after { content: ""; position: absolute; top: 0; width: 25%; height: 100%; pointer-events: none; z-index: 10; }
+.page.front::after { left: 0; background: linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 25%, transparent 100%); }
+.page.back::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 25%, transparent 100%); }
+
+/* ---------------- CONTENT STYLES ---------------- */
+.bg-cover-front, .bg-cover-back { background: var(--cover-gradient) !important; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; }
+.bg-cover-front::before, .bg-cover-back::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); opacity: 0.6; pointer-events: none; }
+.inner-page { display: flex; justify-content: center; align-items: center; background-color: var(--bg-cream); }
+.logo-mark { font-family: 'Playfair Display', serif; font-size: 2.5em; color: var(--corner-accent); }
+
+.p1-content, .thanks-container { position: relative; z-index: 1; width: 100%; padding: 8%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+.corner-tr { position: absolute; top: 5%; right: 5%; width: 12%; aspect-ratio: 1/1; border-top: 2px solid var(--corner-accent); border-right: 2px solid var(--corner-accent); }
+.corner-bl { position: absolute; bottom: 5%; left: 5%; width: 12%; aspect-ratio: 1/1; border-bottom: 2px solid var(--corner-accent); border-left: 2px solid var(--corner-accent); }
+
+.text-top { font-size: 0.85em; letter-spacing: 0.2em; margin-bottom: 1em; color: var(--text-dark); }
+.circle-img-wrap { width: 45%; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; border: 4px solid var(--page-white); box-shadow: 0 10px 20px rgba(0,0,0,0.08); margin-bottom: 1.5em; }
+.circle-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.title-names { font-family: 'Playfair Display', serif; font-size: 2.8em; margin: 0 0 0.5em 0; line-height: 1.1; background: var(--theme-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text-bottom { font-size: 0.9em; letter-spacing: 0.1em; margin-bottom: 2em; color: var(--text-dark); }
+.click-hint { font-size: 0.75em; letter-spacing: 1px; color: var(--text-dark); opacity: 0.6; animation: blink 2s infinite; }
+@keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+/* 🟢 ---------------- VIDEO ---------------- 🟢 */
+.bg-video-page { 
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80'); 
+  background-size: cover; 
+  background-position: center; 
+  position: relative; 
+  z-index: 1; /* กำหนด Stacking Context ให้หน้าหลัก */
+}
+/* 🟢 แก้ไข: เปลี่ยนจาก ::after เป็น ::before และปรับ z-index เพื่อดันเบลอไปไว้หลังสุด */
+.bg-video-page::before { 
+  content: ""; 
+  position: absolute; 
+  top: 0; left: 0; width: 100%; height: 100%; 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); /* รองรับ Safari/iOS */
+  z-index: -1; /* ผลักแผ่นเบลอไปอยู่หลังเนื้อหา แต่ยังทับภาพพื้นหลัง */
+  pointer-events: none; 
+}
+.p-video-content { 
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+  padding: 8%; width: 100%; height: 100%; 
+  position: relative; 
+  z-index: 2; /* 🟢 ดึงเนื้อหาและวิดีโอขึ้นมาหน้าสุด ไม่โดนเบลอแน่นอน */
+}
+.p-video-content .section-title { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-family: 'Playfair Display', serif; font-size: 2em; margin-bottom: 0.5em; }
+.video-frame { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; border: 3px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 1em; }
+.video-frame video { width: 100%; height: 100%; object-fit: cover; }
+.video-caption { font-family: 'Prompt', sans-serif; color: rgba(255,255,255,0.9); font-style: italic; font-size: 0.95em; }
+
+/* MAP & PHOTO */
+.bg-map-full { background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80') center/cover; display: flex; align-items: center; justify-content: center; padding: 5%; }
+.bg-photo-full { background: url('https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=800&q=80') center/cover; display: flex; align-items: center; justify-content: center; padding: 5%; }
+.glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); padding: 10%; border-radius: 12px; text-align: center; width: 85%; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 2em; color: var(--text-dark); margin-bottom: 0.3em; }
+.icon-accent { font-size: 2em; margin-bottom: 0.3em; }
+.venue-name { font-weight: 600; color: var(--text-accent); margin-bottom: 0.3em; font-size: 1.1em; }
+.venue-address { font-size: 0.9em; color: #555; margin-bottom: 1.5em; line-height: 1.5; }
+.since-text { font-size: 1em; color: var(--text-accent); letter-spacing: 2px; font-weight: 500; }
+.btn-solid { background: var(--text-accent); color: white; border: none; padding: 0.8em 1.5em; border-radius: 20px; font-family: 'Prompt'; font-size: 0.9em; cursor: pointer; transition: 0.3s; }
+
+/* RSVP */
+.bg-rsvp-page { background-color: var(--bg-cream); }
+.p-rsvp-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8%; width: 100%; height: 100%; }
+.elegant-form { width: 100%; background: white; padding: 8%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+.input-group { margin-bottom: 1em; text-align: left; }
+.input-group label { display: block; font-size: 0.8em; color: #7f8c8d; margin-bottom: 0.3em; text-transform: uppercase; }
+.input-group input, .input-group select { width: 100%; padding: 0.8em; border: 1px solid #e0e0e0; border-radius: 6px; font-family: 'Prompt'; font-size: 0.95em; transition: 0.3s; }
+.radio-card-group { display: flex; flex-direction: column; gap: 0.5em; margin-bottom: 1.5em; }
+.card-content { display: flex; align-items: center; padding: 0.8em; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 0.9em; cursor: pointer; }
+.radio-card input[type="radio"] { display: none; }
+.check-circle { width: 1.2em; height: 1.2em; border: 2px solid #ccc; border-radius: 50%; margin-right: 0.8em; position: relative; }
+.radio-card input[type="radio"]:checked + .card-content { border-color: var(--text-accent); background-color: rgba(122, 144, 111, 0.05); }
+.radio-card input[type="radio"]:checked + .card-content .check-circle::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 0.6em; height: 0.6em; background-color: var(--text-accent); border-radius: 50%; }
+.btn-theme-gradient { background: var(--theme-gradient); color: white; border: none; width: 100%; padding: 0.8em; border-radius: 25px; font-family: 'Prompt'; font-size: 1em; cursor: pointer; }
+
+/* THANK YOU */
+.thanks-icon { font-size: 3.5em; margin-bottom: 0.2em; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.thanks-title { font-family: 'Playfair Display', serif; font-size: 2.8em; background: var(--theme-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; }
+.thanks-subtext { font-size: 1em; opacity: 0.9; margin-top: 0.5em; font-style: italic; color: var(--text-dark); }
+.divider-theme { width: 3em; height: 2px; background: var(--text-accent); margin: 1em auto; opacity: 0.5; }
+.thanks-names { font-family: 'Playfair Display', serif; font-size: 1.8em; color: var(--text-dark); margin-bottom: 0.2em; }
+.thanks-date { font-size: 0.9em; letter-spacing: 0.2em; color: var(--text-dark); }
+.see-you-text { margin-top: 2em; font-size: 0.85em; background: var(--theme-gradient); color: #fff; padding: 0.6em 1.5em; border-radius: 20px; letter-spacing: 1px; }
+
+#confetti-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10001; }
