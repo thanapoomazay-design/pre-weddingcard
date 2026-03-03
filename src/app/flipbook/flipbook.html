@@ -3,7 +3,6 @@
   <h2 class="warning-text">กรุณาหมุนหน้าจอเป็นแนวนอน</h2>
   <p class="warning-sub">เพื่อให้การแสดงผล Flipbook สมบูรณ์แบบที่สุด</p>
 </div>
-<video (play)="onVideoPlay()" (pause)="onVideoPause()" (ended)="onVideoPause()" ...></video>
 <audio id="bgMusic" loop>
   <source src="wedding-song.mp3" type="audio/mpeg">
 </audio>
@@ -38,11 +37,21 @@
     </div>
 
     <div class="leaf" [ngClass]="{'flipped': leaves[1].isFlipped}">
+      
       <div class="page front bg-video-page">
         <div class="p-video-content">
           <h2 class="section-title">A Glimpse of Us</h2>
           <div class="video-frame">
-            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80"></video>
+            <video 
+  src="https://www.w3schools.com/html/mov_bbb.mp4" 
+  controls 
+  playsinline 
+  preload="metadata" 
+  poster="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80"
+  (play)="onVideoPlay()"
+  (pause)="onVideoPause()"
+  (ended)="onVideoPause()">
+</video>
           </div>
           <p class="video-caption">"ทุกเรื่องราวเริ่มต้นที่นี่..."</p>
         </div>
