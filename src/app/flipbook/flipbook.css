@@ -2,29 +2,11 @@
 
 
 /* 🟢 Countdown Styles */
-.countdown-container {
-  display: flex;
-  gap: 15px;
-  margin: 1em 0 1.5em;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 10px 20px;
-  border-radius: 50px;
-  backdrop-filter: blur(5px);
-}
+
 .count-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.count-item span {
-  font-weight: 600;
-  font-size: 1.2em;
-  color: var(--text-dark);
-}
-.count-item small {
-  font-size: 0.6em;
-  text-transform: uppercase;
-  color: var(--text-accent);
 }
 
 /* 🟢 ย้ายมาไว้ท้ายไฟล์ (นอกปีกกาอื่นๆ ทั้งหมด) */
