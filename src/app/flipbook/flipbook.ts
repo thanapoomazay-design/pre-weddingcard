@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core'; 
+import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import confetti from 'canvas-confetti';
 
@@ -20,9 +20,9 @@ export class FlipbookComponent implements OnInit {
 
   fallingLeaves: any[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
-  currentPage = 0; 
+  currentPage = 0;
   isPlaying = false;
   hasMusicStarted = false;
   countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
@@ -30,8 +30,7 @@ export class FlipbookComponent implements OnInit {
 
   ngOnInit() {
     this.startCountdown();
-    this.generateLeaves(120);
-    this.startMusic();
+    this.generateLeaves(50);
   }
 
   generateLeaves(count: number) {
@@ -48,7 +47,7 @@ export class FlipbookComponent implements OnInit {
   }
   // เพิ่มตัวแปรสำหรับเก็บค่าเวลา
 
-startCountdown() {
+  startCountdown() {
     const weddingDate = new Date('2026-12-24T00:00:00').getTime();
 
     const update = () => {
@@ -82,11 +81,11 @@ startCountdown() {
 
   handleGlobalClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    
+
     // 🟢 แก้ไข: เอา .elegant-form ออก และเพิ่ม label, textarea เข้าไป 
     // เพื่อให้แตะพื้นที่ว่างในหน้า RSVP เพื่อพลิกหน้าได้ 100%
     if (target.closest('button, input, select, textarea, video, a, label')) {
-      return; 
+      return;
     }
 
     this.startMusic();
@@ -102,22 +101,36 @@ startCountdown() {
   }
 
   nextPage() {
+
+    const video = document.querySelector('video');
+    if (video && !video.paused) video.pause();
+
+    if (this.currentPage === 4) {
+      alert('กรุณากดปุ่ม Send Response เพื่อดำเนินการต่อ');
+      return;
+    }
+
     if (this.currentPage < 5) {
       this.leaves[this.currentPage].isFlipped = true;
       this.currentPage++;
-      
+
       if (this.currentPage === 5) {
         this.launchConfetti();
       }
     } else if (this.currentPage === 5) {
       const allFlipped = this.leaves.every(leaf => leaf.isFlipped);
       if (allFlipped) {
-         this.leaves.forEach(leaf => leaf.isFlipped = false);
-         this.currentPage = 0;
-      }}
+        this.leaves.forEach(leaf => leaf.isFlipped = false);
+        this.currentPage = 0;
+      }
+    }
   }
 
   prevPage() {
+
+    const video = document.querySelector('video');
+    if (video && !video.paused) video.pause();
+
     if (this.currentPage > 0) {
       this.currentPage--;
       this.leaves[this.currentPage].isFlipped = false;
@@ -136,48 +149,44 @@ startCountdown() {
       }
     }
   }
-  
-  onVideoPlay() {
-  const audio = document.getElementById('bgMusic') as HTMLAudioElement;
-  if (audio) audio.pause(); // สั่งหยุดเพลงเองอย่างเป็นทางการเมื่อวิดีโอเล่น
-}
 
-onVideoPause() {
-  const audio = document.getElementById('bgMusic') as HTMLAudioElement;
-  if (audio && this.hasMusicStarted) audio.play(); // ให้เพลงกลับมาเล่นเมื่อวิดีโอหยุดหรือจบ
-}
+  onVideoPlay() {
+    const audio = document.getElementById('bgMusic') as HTMLAudioElement;
+    if (audio) audio.pause(); // สั่งหยุดเพลงเองอย่างเป็นทางการเมื่อวิดีโอเล่น
+  }
+
+  onVideoPause() {
+    const audio = document.getElementById('bgMusic') as HTMLAudioElement;
+    if (audio && this.hasMusicStarted) audio.play(); // ให้เพลงกลับมาเล่นเมื่อวิดีโอหยุดหรือจบ
+  }
   confirmRSVP(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    
-    // 1. สั่งพลิกหน้ากระดาษไป Thank you ก่อนเสมอ
     this.leaves.forEach(leaf => leaf.isFlipped = true);
     this.currentPage = 5;
-    
-    // 2. ค่อยจุดพลุ (ย้ายมาไว้หลังสุด เพื่อความชัวร์ 100%)
     setTimeout(() => {
       this.launchConfetti();
     }, 200);
   }
 
 
-// ปรับปรุงฟังก์ชันจุดพลุให้เรียกใช้ Global Canvas ที่อยู่หน้าสุด
+  // ปรับปรุงฟังก์ชันจุดพลุให้เรียกใช้ Global Canvas ที่อยู่หน้าสุด
 
   launchConfetti() {
-     const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
-  if (!canvas) return;
+    const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
 
-  const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+    const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
 
-  const fire = (particleRatio: number, opts: any) => {
-    myConfetti({
-      ...opts,
-      particleCount: Math.floor(200 * particleRatio),
-      origin: { y: 0.7 },
-      colors: ['#7A906F', '#A9BA9D', '#FFFFFF', '#FFD700'],
-    });
-  };
-    
+    const fire = (particleRatio: number, opts: any) => {
+      myConfetti({
+        ...opts,
+        particleCount: Math.floor(200 * particleRatio),
+        origin: { y: 0.7 },
+        colors: ['#7A906F', '#A9BA9D', '#FFFFFF', '#FFD700'],
+      });
+    };
+
     fire(0.25, { spread: 26, startVelocity: 55 });
     fire(0.2, { spread: 60 });
     fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });

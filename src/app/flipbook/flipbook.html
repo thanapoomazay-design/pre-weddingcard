@@ -13,20 +13,18 @@
 
 <div class="scene" (click)="handleGlobalClick($event)">
 
-<div class="garden-bg"></div>
+  <div class="garden-bg"></div>
 
-<div class="flowers-container">
-  
-  <div *ngFor="let leaf of fallingLeaves" 
-       class="flower leaf-style"
-       [ngStyle]="{
+  <div class="flowers-container">
+
+    <div *ngFor="let leaf of fallingLeaves" class="flower leaf-style" [ngStyle]="{
          'left': leaf.left,
          'animation-duration': leaf.animationDuration,
          'animation-delay': leaf.animationDelay
        }">
-  </div>
+    </div>
 
-</div>
+  </div>
 
   <div class="book" [ngClass]="getBookClass()">
 
@@ -38,7 +36,7 @@
       <div class="ring"></div>
       <div class="ring"></div>
     </div>
-    
+
     <div class="leaf" [ngClass]="{'flipped': leaves[0].isFlipped}">
       <div class="page front bg-cover-front">
         <div class="corner-tr"></div>
@@ -46,56 +44,55 @@
         <div class="p1-content">
           <div class="text-top">THE WEDDING OF</div>
           <div class="circle-img-wrap">
-            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=300&q=80" alt="Couple" />
+            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=300&q=80"
+              alt="Couple" />
           </div>
           <h1 class="title-names">Mick &<br>Khim</h1>
-          
+
           <div class="countdown-container">
-        <div class="count-box">
-          <span class="count-num">{{countdown.days}}</span>
-          <span class="count-label">Days</span>
-        </div>
-        <div class="count-box">
-          <span class="count-num">{{countdown.hours}}</span>
-          <span class="count-label">Hrs</span>
-        </div>
-        <div class="count-box">
-          <span class="count-num">{{countdown.minutes}}</span>
-          <span class="count-label">Min</span>
-        </div>
-        <div class="count-box">
-          <span class="count-num">{{countdown.seconds}}</span>
-          <span class="count-label">Sec</span>
-        </div>
-      </div>
-                
+            <div class="count-box">
+              <span class="count-num">{{countdown.days}}</span>
+              <span class="count-label">Days</span>
+            </div>
+            <div class="count-box">
+              <span class="count-num">{{countdown.hours}}</span>
+              <span class="count-label">Hrs</span>
+            </div>
+            <div class="count-box">
+              <span class="count-num">{{countdown.minutes}}</span>
+              <span class="count-label">Min</span>
+            </div>
+            <div class="count-box">
+              <span class="count-num">{{countdown.seconds}}</span>
+              <span class="count-label">Sec</span>
+            </div>
+          </div>
+
           <div class="click-hint">TAP RIGHT TO OPEN</div>
         </div>
       </div>
-      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+      <div class="page back inner-page bg-paper-inner">
+        <div class="logo-mark">M & K</div>
+      </div>
     </div>
 
     <div class="leaf" [ngClass]="{'flipped': leaves[1].isFlipped}">
-      
+
       <div class="page front bg-video-page">
         <div class="p-video-content">
           <h2 class="section-title">A Glimpse of Us</h2>
           <div class="video-frame">
-            <video 
-  src="https://www.w3schools.com/html/mov_bbb.mp4" 
-  controls 
-  playsinline 
-  preload="metadata" 
-  poster="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80"
-  (play)="onVideoPlay()"
-  (pause)="onVideoPause()"
-  (ended)="onVideoPause()">
-</video>
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls playsinline preload="metadata"
+              poster="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80"
+              (play)="onVideoPlay()" (pause)="onVideoPause()" (ended)="onVideoPause()">
+            </video>
           </div>
           <p class="video-caption">"ทุกเรื่องราวเริ่มต้นที่นี่..."</p>
         </div>
       </div>
-      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+      <div class="page back inner-page bg-paper-inner">
+        <div class="logo-mark">M & K</div>
+      </div>
     </div>
 
     <div class="leaf" [ngClass]="{'flipped': leaves[2].isFlipped}">
@@ -108,7 +105,9 @@
           <button class="btn-solid" (click)="$event.stopPropagation()">Open in Maps</button>
         </div>
       </div>
-      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+      <div class="page back inner-page bg-paper-inner">
+        <div class="logo-mark">M & K</div>
+      </div>
     </div>
 
     <div class="leaf" [ngClass]="{'flipped': leaves[3].isFlipped}">
@@ -118,42 +117,53 @@
           <div class="since-text">SINCE 2022</div>
         </div>
       </div>
-      <div class="page back inner-page bg-paper-inner"><div class="logo-mark">M & K</div></div>
+      <div class="page back inner-page bg-paper-inner">
+        <div class="logo-mark">M & K</div>
+      </div>
     </div>
 
     <div class="leaf" [ngClass]="{'flipped': leaves[4].isFlipped}">
       <div class="page front bg-rsvp-page">
         <div class="p-rsvp-content">
-          <div class="elegant-form">
-            <div class="input-group">
-              <label>Full Name</label>
-              <input type="text" placeholder="Enter your name" required>
-            </div>
-            <div class="input-group">
-              <select required>
-                <option value="" disabled selected>จำนวนผู้เข้าร่วม</option>
-                <option value="1">1 ท่าน</option>
-                <option value="2">2 ท่าน</option>
-              </select>
-            </div>
-            <div class="radio-card-group">
-              <label class="radio-card">
-                <input type="radio" name="attend" value="yes" checked>
-                <span class="card-content"><span class="check-circle"></span> Joyfully Accepts</span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="attend" value="no">
-                <span class="card-content"><span class="check-circle"></span> Declines</span>
-              </label>
-            </div>
-            
-            <button type="button" class="btn-gold-gradient w-100" (click)="confirmRSVP($event)">
-              Send Response
-            </button>
+          <div class="rsvp-wrapper">
+            <h2 class="rsvp-title">RSVP</h2>
+            <p class="rsvp-subtitle">Please respond by December 1, 2026</p>
+
+            <form class="rsvp-form">
+              <div class="form-group">
+                <input type="text" id="guestName" class="form-input" placeholder="Your Full Name" required>
+              </div>
+
+              <div class="form-group">
+                <select class="form-input" required>
+                  <option value="" disabled selected>จำนวนผู้เข้าร่วม (Guests)</option>
+                  <option value="1">1 ท่าน</option>
+                  <option value="2">2 ท่าน</option>
+                  <option value="3">3 ท่าน</option>
+                </select>
+              </div>
+
+              <div class="form-group radio-group">
+                <label class="custom-radio">
+                  <input type="radio" name="attendance" value="yes" checked>
+                  <span class="radio-mark"></span>
+                  Joyfully Accepts (มาร่วมงาน)
+                </label>
+                <label class="custom-radio">
+                  <input type="radio" name="attendance" value="no">
+                  <span class="radio-mark"></span>
+                  Regretfully Declines (ไม่สามารถมาได้)
+                </label>
+              </div>
+
+              <button type="button" class="btn-rsvp" (click)="confirmRSVP($event)">
+                Send Response
+              </button>
+            </form>
           </div>
         </div>
       </div>
-    
+
       <div class="page back back-cover bg-cover-back">
         <div class="thanks-container">
           <div class="thanks-icon">🕊️</div>
