@@ -22,7 +22,7 @@ export class FlipbookComponent implements OnInit {
   isPlaying = false;
   hasMusicStarted = false;
 
-  ngOnInit() {}
+  ngOnInit() {this.startCountdown();}
 
   getBookClass() {
     if (this.currentPage === 0) return 'closed-front';
@@ -109,20 +109,54 @@ onVideoPause() {
     }, 200);
   }
 
+  
+// เพิ่มตัวแปรสำหรับเก็บค่าเวลา
+countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+private timerInterval: any;
+
+
+
+startCountdown() {
+  const weddingDate = new Date('2026-12-24T00:00:00').getTime(); // กำหนดวันแต่งงาน
+
+  this.timerInterval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if (distance < 0) {
+      clearInterval(this.timerInterval);
+      return;
+    }
+
+    this.countdown.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    this.countdown.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    this.countdown.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  }, 1000);
+}
+
+// ปรับปรุงฟังก์ชันจุดพลุให้เรียกใช้ Global Canvas ที่อยู่หน้าสุด
+
   launchConfetti() {
-    const fire = (particleRatio: number, opts: any) => {
-      confetti({
-        ...opts,
-        particleCount: Math.floor(500 * particleRatio),
-        origin: { y: 0.8 },
-        colors: ['#ffffff', '#e8f5e9', '#c8e6c9', '#a5d6a7', '#ffecb3'],
-        disableForReducedMotion: true
-      });
-    };
+     const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
+  if (!canvas) return;
+
+  const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+
+  const fire = (particleRatio: number, opts: any) => {
+    myConfetti({
+      ...opts,
+      particleCount: Math.floor(200 * particleRatio),
+      origin: { y: 0.7 },
+      colors: ['#7A906F', '#A9BA9D', '#FFFFFF', '#FFD700'],
+    });
+  };
+    
     fire(0.25, { spread: 26, startVelocity: 55 });
     fire(0.2, { spread: 60 });
     fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
     fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
     fire(0.1, { spread: 120, startVelocity: 45 });
   }
+
 }

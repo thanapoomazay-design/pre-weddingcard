@@ -1,5 +1,143 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Prompt:wght@300;400;500;600&display=swap');
 
+
+/* 🟢 Countdown Styles */
+.countdown-container {
+  display: flex;
+  gap: 15px;
+  margin: 1em 0 1.5em;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(5px);
+}
+.count-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.count-item span {
+  font-weight: 600;
+  font-size: 1.2em;
+  color: var(--text-dark);
+}
+.count-item small {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+/* 🟢 ย้ายมาไว้ท้ายไฟล์ (นอกปีกกาอื่นๆ ทั้งหมด) */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999; /* มั่นใจว่าอยู่หน้าสุด */
+}
+
+
+.garden-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* 🟢 เปลี่ยน URL ภาพสวนผึ้งตรงนี้ */
+  background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920&auto=format&fit=crop'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* 🟢 เทคนิคเบลอและปรับความบาง */
+  filter: blur(3px) brightness(0.9); /* ปรับค่า px เพิ่ม-ลดความเบลอ */
+  opacity: 0.50; /* ปรับค่า 0.0-1.0 เพื่อความบางของภาพ (0.25 คือ 25%) */
+  
+  /* 🟢 อยู่หลังสุด (น้อยกว่า .scene และ .flowers-container) */
+  z-index: 0; 
+  pointer-events: none;
+}
+
+/* Container หลัก */
+.flowers-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* รูปร่างใบไม้เรียว */
+.leaf-style {
+  width: 14px;
+  height: 7px;
+  background: #A9BA9D;
+  border-radius: 100% 0% 100% 0%;
+  opacity: 0.5;
+  filter: blur(0.3px);
+}
+
+.flower {
+  position: absolute;
+  top: -5%; /* เริ่มจากเหนือขอบจอ */
+  animation: fall-continuous linear infinite;
+}
+
+/* Animation แบบโปรยต่อเนื่อง */
+@keyframes fall-continuous {
+  0% {
+    transform: translateY(0vh) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    /* ร่อนลงพื้นพร้อมหมุนและส่ายไปด้านข้าง */
+    transform: translateY(110vh) rotate(720deg) translateX(120px);
+    opacity: 0;
+  }
+}
+
+/* สุ่มตำแหน่ง (Left), ความเร็ว (Duration), และการหน่วงเวลา (Delay) ทั้ง 20 ใบ */
+.flower:nth-child(1) { left: 5%;  animation-duration: 12s; animation-delay: -2s; }
+.flower:nth-child(2) { left: 15%; animation-duration: 15s; animation-delay: -5s; }
+.flower:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: -1s; }
+.flower:nth-child(4) { left: 35%; animation-duration: 18s; animation-delay: -8s; }
+.flower:nth-child(5) { left: 45%; animation-duration: 13s; animation-delay: -3s; }
+.flower:nth-child(6) { left: 55%; animation-duration: 11s; animation-delay: -10s; }
+.flower:nth-child(7) { left: 65%; animation-duration: 16s; animation-delay: -4s; }
+.flower:nth-child(8) { left: 75%; animation-duration: 14s; animation-delay: -7s; }
+.flower:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -2s; }
+.flower:nth-child(10) { left: 95%; animation-duration: 12s; animation-delay: -6s; }
+.flower:nth-child(11) { left: 8%;  animation-duration: 17s; animation-delay: -9s; }
+.flower:nth-child(12) { left: 18%; animation-duration: 11s; animation-delay: -1s; }
+.flower:nth-child(13) { left: 28%; animation-duration: 15s; animation-delay: -11s; }
+.flower:nth-child(14) { left: 38%; animation-duration: 20s; animation-delay: -5s; }
+.flower:nth-child(15) { left: 48%; animation-duration: 12s; animation-delay: -3s; }
+.flower:nth-child(16) { left: 58%; animation-duration: 14s; animation-delay: -12s; }
+.flower:nth-child(17) { left: 68%; animation-duration: 10s; animation-delay: -2s; }
+.flower:nth-child(18) { left: 78%; animation-duration: 16s; animation-delay: -7s; }
+.flower:nth-child(19) { left: 88%; animation-duration: 18s; animation-delay: -4s; }
+.flower:nth-child(20) { left: 98%; animation-duration: 13s; animation-delay: -10s; }
+
+/* คงรูปแบบใบไม้เดิม */
+.leaf-style {
+  width: 14px;
+  height: 7px;
+  background: #A9BA9D; 
+  border-radius: 100% 0% 100% 0%; 
+  opacity: 0.5;
+}
+
 .scene {
   --bg-cream: #F9F8F4; 
   --page-white: #FFFFFF; 
@@ -50,7 +188,7 @@
   height: var(--book-h, 460px); 
   font-size: var(--font-base, 14px);
   transform-style: preserve-3d; 
-  transform: translate(-50%, -50%) !important;
+  transform: translate(-50%, -50%);
   transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); 
   border-radius: 0 12px 12px 0;
 }
@@ -61,6 +199,9 @@
 
 /* มือถือ */
 @media (max-width: 768px) {
+  .book {
+    transform: translate(-50%, -50%) !important;
+  }
   .book.closed-front, 
   .book.open { transform: translate(-50%, -50%) !important; }
   .book.closed-back { transform: translate(50%, -50%) !important; box-shadow: none !important; }
