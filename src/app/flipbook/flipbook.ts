@@ -86,7 +86,15 @@ export class FlipbookComponent implements OnInit {
       }
     }
   }
+  onVideoPlay() {
+  const audio = document.getElementById('bgMusic') as HTMLAudioElement;
+  if (audio) audio.pause(); // สั่งหยุดเพลงเองอย่างเป็นทางการเมื่อวิดีโอเล่น
+}
 
+onVideoPause() {
+  const audio = document.getElementById('bgMusic') as HTMLAudioElement;
+  if (audio && this.hasMusicStarted) audio.play(); // ให้เพลงกลับมาเล่นเมื่อวิดีโอหยุดหรือจบ
+}
   confirmRSVP(event: Event) {
     event.preventDefault();
     event.stopPropagation();
