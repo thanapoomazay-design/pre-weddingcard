@@ -1,12 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Prompt:wght@300;400;500;600&display=swap');
 
 
-/* 🟢 Countdown Styles */
+/* จัดตำแหน่ง Countdown ให้เหมาะสมบนหน้าแรก */
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px auto;
+  background: rgba(255, 255, 255, 0.3); /* โปร่งแสงเล็กน้อยเพื่อให้เข้ากับพื้นหลัง */
+  padding: 8px 15px;
+  border-radius: 15px;
+  backdrop-filter: blur(4px);
+  width: fit-content;
+}
 
-.count-item {
+.count-box {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 40px;
+}
+
+.count-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #5d6d4e; /* สีเขียวโทนเดียวกับการ์ด */
+  line-height: 1;
+}
+
+.count-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #8a9a7b;
+  margin-top: 2px;
 }
 
 /* 🟢 ย้ายมาไว้ท้ายไฟล์ (นอกปีกกาอื่นๆ ทั้งหมด) */
@@ -43,73 +70,47 @@
 }
 
 /* Container หลัก */
-.flowers-container {
-  position: fixed;
+/* คอนเทนเนอร์คอยกันไม่ให้ใบไม้ล้นจอ */
+.falling-leaves-container {
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* กดทะลุใบไม้ได้ */
   overflow: hidden;
+  z-index: 10;
 }
 
-/* รูปร่างใบไม้เรียว */
-.leaf-style {
-  width: 14px;
-  height: 7px;
-  background: #A9BA9D;
-  border-radius: 100% 0% 100% 0%;
-  opacity: 0.5;
-  filter: blur(0.3px);
+/* สไตล์หลักของใบไม้ */
+.dynamic-leaf {
+  position: absolute;
+  top: -10%; /* เริ่มต้นเหนือขอบจอด้านบน */
+  animation-name: fall-down;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.8;
 }
 
+.leaf-img {
+  width: 30px; /* ปรับขนาดพื้นฐานตามต้องการ */
+  height: auto;
+}
+
+/* 🟢 อนิเมชันการตกลงมา (เขียนแค่ชุดเดียว) */
 .flower {
   position: absolute;
-  top: -5%; /* เริ่มจากเหนือขอบจอ */
+  top: -5%;
   animation: fall-continuous linear infinite;
 }
 
-/* Animation แบบโปรยต่อเนื่อง */
+/* 🟢 คง Keyframes ของเดิมเอาไว้ */
 @keyframes fall-continuous {
-  0% {
-    transform: translateY(0vh) rotate(0deg) translateX(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.5;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    /* ร่อนลงพื้นพร้อมหมุนและส่ายไปด้านข้าง */
-    transform: translateY(110vh) rotate(720deg) translateX(120px);
-    opacity: 0;
-  }
+  0% { transform: translateY(0vh) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(110vh) rotate(720deg) translateX(120px); opacity: 0; }
 }
-
-/* สุ่มตำแหน่ง (Left), ความเร็ว (Duration), และการหน่วงเวลา (Delay) ทั้ง 20 ใบ */
-.flower:nth-child(1) { left: 5%;  animation-duration: 12s; animation-delay: -2s; }
-.flower:nth-child(2) { left: 15%; animation-duration: 15s; animation-delay: -5s; }
-.flower:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: -1s; }
-.flower:nth-child(4) { left: 35%; animation-duration: 18s; animation-delay: -8s; }
-.flower:nth-child(5) { left: 45%; animation-duration: 13s; animation-delay: -3s; }
-.flower:nth-child(6) { left: 55%; animation-duration: 11s; animation-delay: -10s; }
-.flower:nth-child(7) { left: 65%; animation-duration: 16s; animation-delay: -4s; }
-.flower:nth-child(8) { left: 75%; animation-duration: 14s; animation-delay: -7s; }
-.flower:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -2s; }
-.flower:nth-child(10) { left: 95%; animation-duration: 12s; animation-delay: -6s; }
-.flower:nth-child(11) { left: 8%;  animation-duration: 17s; animation-delay: -9s; }
-.flower:nth-child(12) { left: 18%; animation-duration: 11s; animation-delay: -1s; }
-.flower:nth-child(13) { left: 28%; animation-duration: 15s; animation-delay: -11s; }
-.flower:nth-child(14) { left: 38%; animation-duration: 20s; animation-delay: -5s; }
-.flower:nth-child(15) { left: 48%; animation-duration: 12s; animation-delay: -3s; }
-.flower:nth-child(16) { left: 58%; animation-duration: 14s; animation-delay: -12s; }
-.flower:nth-child(17) { left: 68%; animation-duration: 10s; animation-delay: -2s; }
-.flower:nth-child(18) { left: 78%; animation-duration: 16s; animation-delay: -7s; }
-.flower:nth-child(19) { left: 88%; animation-duration: 18s; animation-delay: -4s; }
-.flower:nth-child(20) { left: 98%; animation-duration: 13s; animation-delay: -10s; }
 
 /* คงรูปแบบใบไม้เดิม */
 .leaf-style {

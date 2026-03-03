@@ -16,26 +16,16 @@
 <div class="garden-bg"></div>
 
 <div class="flowers-container">
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
-  <div class="flower leaf-style"></div>
+  
+  <div *ngFor="let leaf of fallingLeaves" 
+       class="flower leaf-style"
+       [ngStyle]="{
+         'left': leaf.left,
+         'animation-duration': leaf.animationDuration,
+         'animation-delay': leaf.animationDelay
+       }">
+  </div>
+
 </div>
 
   <div class="book" [ngClass]="getBookClass()">
@@ -59,10 +49,26 @@
             <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=300&q=80" alt="Couple" />
           </div>
           <h1 class="title-names">Mick &<br>Khim</h1>
-          <div class="text-bottom count-item">
-             {{countdown.days}} Days {{countdown.hours}} Hours {{countdown.minutes}} Min {{countdown.seconds}} Sec
-          </div>
           
+          <div class="countdown-container">
+        <div class="count-box">
+          <span class="count-num">{{countdown.days}}</span>
+          <span class="count-label">Days</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num">{{countdown.hours}}</span>
+          <span class="count-label">Hrs</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num">{{countdown.minutes}}</span>
+          <span class="count-label">Min</span>
+        </div>
+        <div class="count-box">
+          <span class="count-num">{{countdown.seconds}}</span>
+          <span class="count-label">Sec</span>
+        </div>
+      </div>
+                
           <div class="click-hint">TAP RIGHT TO OPEN</div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import confetti from 'canvas-confetti';
 
@@ -18,11 +18,61 @@ export class FlipbookComponent implements OnInit {
     { id: 5, isFlipped: false }
   ];
 
+  fallingLeaves: any[] = [];
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   currentPage = 0; 
   isPlaying = false;
   hasMusicStarted = false;
+  countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  private timerInterval: any;
 
-  ngOnInit() {this.startCountdown();}
+  ngOnInit() {
+    this.startCountdown();
+    this.generateLeaves(120);
+    this.startMusic();
+  }
+
+  generateLeaves(count: number) {
+    this.fallingLeaves = Array.from({ length: count }).map((_, i) => {
+      return {
+        id: i,
+        left: Math.random() * 100 + '%', // สุ่มตำแหน่งแนวนอน 0-100%
+        animationDuration: (Math.random() * 8 + 5) + 's', // สุ่มความเร็วในการตก (5 - 13 วินาที)
+        animationDelay: (Math.random() * 10) + 's', // สุ่มเวลาเริ่มตก จะได้ไม่ตกลงมาพร้อมกัน
+        scale: Math.random() * 0.6 + 0.4, // สุ่มขนาดใบไม้ (เล็ก-ใหญ่)
+        rotation: Math.random() * 360 // สุ่มองศาเริ่มต้น
+      };
+    });
+  }
+  // เพิ่มตัวแปรสำหรับเก็บค่าเวลา
+
+startCountdown() {
+    const weddingDate = new Date('2026-12-24T00:00:00').getTime();
+
+    const update = () => {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance < 0) {
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        this.cdr.detectChanges(); // บังคับอัปเดต
+        return;
+      }
+
+      this.countdown.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      this.countdown.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.countdown.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      this.cdr.detectChanges(); // 🟢 บังคับให้ Angular อัปเดตหน้าจอทันทีที่มีการเปลี่ยนแปลง
+    };
+
+    update(); // เรียกทำงานทันทีที่โหลดหน้า
+    this.timerInterval = setInterval(update, 1000); // ทำงานต่อทุกๆ 1 วินาที
+  }
 
   getBookClass() {
     if (this.currentPage === 0) return 'closed-front';
@@ -86,6 +136,7 @@ export class FlipbookComponent implements OnInit {
       }
     }
   }
+  
   onVideoPlay() {
   const audio = document.getElementById('bgMusic') as HTMLAudioElement;
   if (audio) audio.pause(); // สั่งหยุดเพลงเองอย่างเป็นทางการเมื่อวิดีโอเล่น
@@ -109,31 +160,6 @@ onVideoPause() {
     }, 200);
   }
 
-  
-// เพิ่มตัวแปรสำหรับเก็บค่าเวลา
-countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
-private timerInterval: any;
-
-
-
-startCountdown() {
-  const weddingDate = new Date('2026-12-24T00:00:00').getTime(); // กำหนดวันแต่งงาน
-
-  this.timerInterval = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-
-    if (distance < 0) {
-      clearInterval(this.timerInterval);
-      return;
-    }
-
-    this.countdown.days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    this.countdown.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    this.countdown.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  }, 1000);
-}
 
 // ปรับปรุงฟังก์ชันจุดพลุให้เรียกใช้ Global Canvas ที่อยู่หน้าสุด
 
