@@ -31,5 +31,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist/pre-weddingcard/browser # แก้ให้ตรงกับชื่อโฟลเดอร์ใน dist
+          folder: dist/pre-wedding/browser # แก้ให้ตรงกับชื่อโฟลเดอร์ใน dist
           branch: gh-pages # กิ่งที่ใช้แสดงผลหน้าเว็บ
